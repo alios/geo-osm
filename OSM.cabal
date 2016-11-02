@@ -96,3 +96,4 @@ Library
                       Data.Geo.OSM.Lens.VL
                       Data.Geo.OSM.Lens.WaynodesL
                       Data.Geo.OSM.Lens.ZoomL
+                      Data.Geo.OSM.Lens.Internal

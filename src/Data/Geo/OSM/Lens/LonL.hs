@@ -8,6 +8,7 @@ import Control.Lens.Fold
 import Control.Lens.Review
 import Control.Lens.Prism
 import Control.Lens.TH
+import Data.Geo.OSM.Lens.Internal
 import Text.XML.HXT.Arrow.Pickle
 
 newtype Longitude =
@@ -24,11 +25,8 @@ _Longitude = prism' f t
           | otherwise = Nothing
 
 _LongitudeStr :: Prism' String Longitude
-_LongitudeStr = prism' f t
-  where f (Longitude l) = show l
-        t a = case reads a of
-          [] -> Nothing
-          ((l,_):_) -> preview _Longitude l
+_LongitudeStr = showReadPrism _Longitude
+
 
 instance XmlPickler Longitude where
   xpickle = xpWrapMaybe (preview _LongitudeStr, review _LongitudeStr) xpText
