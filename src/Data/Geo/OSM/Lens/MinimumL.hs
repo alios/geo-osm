@@ -4,5 +4,4 @@ module Data.Geo.OSM.Lens.MinimumL where
 import Control.Lens.Lens
 
 class MinimumL a where
-  minimumL :: 
-    Lens' a String
+  minimumL :: Lens' a String

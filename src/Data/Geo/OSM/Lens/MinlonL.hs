@@ -2,8 +2,7 @@
 module Data.Geo.OSM.Lens.MinlonL where
 
 import Control.Lens.Lens
+import Data.Geo.OSM.Lens.LonL
 
-class MinlonL a where
-  minlonL ::
-    Lens' a String
-
+class HasMinLon a where
+  minLon :: Lens' a Longitude

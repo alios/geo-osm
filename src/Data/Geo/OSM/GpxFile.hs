@@ -24,8 +24,8 @@ import Control.Lens.TH
 data GpxFile = GpxFile {
   _gpxFileId :: String,
   _gpxFileName :: String,
-  _gpxFileLat :: String,
-  _gpxFileLon :: String,
+  _gpxFileLat :: Latitude,
+  _gpxFileLon :: Longitude,
   _gpxFileUser :: String,
   _gpxFilePublic ::Bool,
   _gpxFilePending :: Bool,
@@ -38,8 +38,8 @@ makeLenses ''GpxFile
 gpxFile ::
   String -- ^ The @id@ attribute.
   -> String -- ^ The @name@ attribute.
-  -> String -- ^ The @lat@ attribute.
-  -> String -- ^ The @lon@ attribute.
+  -> Latitude -- ^ The @lat@ attribute.
+  -> Longitude -- ^ The @lon@ attribute.
   -> String -- ^ The @user@ attribute.
   -> Bool -- ^ The @public@ attribute.
   -> Bool -- ^ The @pending@ attribute.
@@ -54,7 +54,7 @@ instance XmlPickler GpxFile where
                                  of "true"  -> Just True
                                     "false" -> Just False
                                     _       -> Nothing, fmap toLower . show)
-    in xpElem "gpx_file" (xpWrap (\(id'', name', lat', lon', user', public', pending', timestamp') -> gpxFile id'' name' lat' lon' user' public' pending' timestamp', \(GpxFile id'' name' lat' lon' user' public' pending' timestamp') -> (id'', name', lat', lon', user', public', pending', timestamp')) (xp8Tuple (xpAttr "id" xpText) (xpAttr "name" xpText) (xpAttr "lat" xpText) (xpAttr "lon" xpText) (xpAttr "user" xpText) (xpDefault False (b (xpAttr "public" xpText))) (xpDefault False (b (xpAttr "pending" xpText))) (xpAttr "timestamp" xpText)))
+    in xpElem "gpx_file" (xpWrap (\(id'', name', lat', lon', user', public', pending', timestamp') -> gpxFile id'' name' lat' lon' user' public' pending' timestamp', \(GpxFile id'' name' lat' lon' user' public' pending' timestamp') -> (id'', name', lat', lon', user', public', pending', timestamp')) (xp8Tuple (xpAttr "id" xpText) (xpAttr "name" xpText) (xpAttr "lat" xpickle) (xpAttr "lon" xpickle) (xpAttr "user" xpText) (xpDefault False (b (xpAttr "public" xpText))) (xpDefault False (b (xpAttr "pending" xpText))) (xpAttr "timestamp" xpText)))
 
 instance Show GpxFile where
   show =
@@ -66,11 +66,11 @@ instance IdL GpxFile where
 instance NameL GpxFile where
   nameL = gpxFileName
 
-instance LatL GpxFile where
-  latL = gpxFileLat
+instance HasLatitude GpxFile where
+  latitude = gpxFileLat
 
-instance LonL GpxFile where
-  lonL = gpxFileLon
+instance HasLongitude GpxFile where
+  longitude = gpxFileLon
 
 instance UserL GpxFile String where
   userL = gpxFileUser

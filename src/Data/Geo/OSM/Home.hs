@@ -16,16 +16,16 @@ import Control.Lens.TH
 
 -- | The @home@ element of a OSM file.
 data Home = Home {
-  _homeLat :: String,
-  _homeLon :: String,
+  _homeLat :: Latitude,
+  _homeLon :: Longitude,
   _homeZoom :: String
   } deriving Eq
 makeLenses ''Home
 
 -- | Constructs a @home@ with lat, lon and zoom.
 home ::
-  String -- ^ The @lat@ attribute.
-  -> String -- ^ The @lon@ attribute.
+  Latitude -- ^ The @lat@ attribute.
+  -> Longitude -- ^ The @lon@ attribute.
   -> String -- ^ The @zoom@ attribute.
   -> Home
 home =
@@ -33,17 +33,17 @@ home =
 
 instance XmlPickler Home where
   xpickle =
-    xpElem "home" (xpWrap (\(lat', lon', zoom') -> home lat' lon' zoom', \(Home lat' lon' zoom') -> (lat', lon', zoom')) (xpTriple (xpAttr "lat" xpText) (xpAttr "lon" xpText) (xpAttr "zoom" xpText)))
+    xpElem "home" (xpWrap (\(lat', lon', zoom') -> home lat' lon' zoom', \(Home lat' lon' zoom') -> (lat', lon', zoom')) (xpTriple (xpAttr "lat" xpickle) (xpAttr "lon" xpickle) (xpAttr "zoom" xpText)))
 
 instance Show Home where
   show =
     showPickled []
 
-instance LatL Home where
-  latL = homeLat
+instance HasLatitude Home where
+  latitude = homeLat
 
-instance LonL Home where
-  lonL = homeLon
+instance HasLongitude Home where
+  longitude = homeLon
 
 instance ZoomL Home where
   zoomL = homeZoom

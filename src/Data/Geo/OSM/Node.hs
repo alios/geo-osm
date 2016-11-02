@@ -23,12 +23,13 @@ import Control.Lens.TH
 
 -- | The @node@ element of a OSM file.
 data Node = Node {
-  _nodeLat :: String,
-  _nodeLon :: String,
+  _nodeLat :: Latitude,
+  _nodeLon :: Longitude,
   _nodeCommon :: NWRCommon
   } deriving Eq
 
 makeLenses ''Node
+
 
 instance HasNWRCommon Node where
   nWRCommon = nodeCommon
@@ -36,17 +37,17 @@ instance HasNWRCommon Node where
 instance XmlPickler Node where
   xpickle =
     xpElem "node" (xpWrap (\(lat', lon', nwr') -> Node lat' lon' nwr', \(Node lat' lon' nwr') -> (lat', lon', nwr'))
-                  (xpTriple (xpAttr "lat" xpText) (xpAttr "lon" xpText) xpickle))
+                  (xpTriple (xpAttr "lat" xpickle) (xpAttr "lon" xpickle) xpickle))
 
 instance Show Node where
   show =
     showPickled []
 
-instance LatL Node where
-  latL = nodeLat
+instance HasLatitude Node where
+  latitude = nodeLat
 
-instance LonL Node where
-  lonL = nodeLon
+instance HasLongitude Node where
+  longitude = nodeLon
 
 instance IdL Node where
   idL = commonId
@@ -71,8 +72,8 @@ instance TimestampL Node (Maybe String) where
 
 -- | Constructs a node with a lat, lon, id, list of tags, changeset, visible, user&uid and timestamp.
 node ::
-  String -- ^ The @lat@ attribute.
-  -> String -- ^ The @lon@ attribute.
+  Latitude -- ^ The @lat@ attribute.
+  -> Longitude -- ^ The @lon@ attribute.
   -> String -- ^ The @id@ attribute.
   -> [Tag] -- ^ The list of tags (@tag@ elements).
   -> Maybe String -- ^ The @changeset@ attribute.

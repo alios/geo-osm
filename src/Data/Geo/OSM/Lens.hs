@@ -2,6 +2,7 @@ module Data.Geo.OSM.Lens(
   module Data.Geo.OSM.Lens.PublicL
 , module Data.Geo.OSM.Lens.OriginL
 , module Data.Geo.OSM.Lens.PerPageL
+, module Data.Geo.OSM.Lens.MaxlatL
 , module Data.Geo.OSM.Lens.MaxlonL
 , module Data.Geo.OSM.Lens.AreaL
 , module Data.Geo.OSM.Lens.GeneratorL
@@ -12,7 +13,6 @@ module Data.Geo.OSM.Lens(
 , module Data.Geo.OSM.Lens.VL
 , module Data.Geo.OSM.Lens.ChildrenL
 , module Data.Geo.OSM.Lens.IdL
-, module Data.Geo.OSM.Lens.MaxlatL
 , module Data.Geo.OSM.Lens.MinlatL
 , module Data.Geo.OSM.Lens.NdL
 , module Data.Geo.OSM.Lens.MinimumL
@@ -79,4 +79,3 @@ import Data.Geo.OSM.Lens.ZoomL
 import Data.Geo.OSM.Lens.RoleL
 import Data.Geo.OSM.Lens.ChangesetL
 import Data.Geo.OSM.Lens.TypeL
-

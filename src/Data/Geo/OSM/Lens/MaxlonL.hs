@@ -2,8 +2,7 @@
 module Data.Geo.OSM.Lens.MaxlonL where
 
 import Control.Lens.Lens
+import Data.Geo.OSM.Lens.LonL
 
-class MaxlonL a where
-  maxlonL ::
-    Lens' a String
-
+class HasMaxLon a where
+  maxLon :: Lens' a Longitude
